@@ -1,8 +1,7 @@
-import { FC, MouseEventHandler } from "react";
+import { FC, MouseEventHandler, useState, useEffect } from "react";
 import { TbShoppingBag } from "react-icons/tb";
 import { ReactComponent as NikeLogo } from "../assets/nike-logo.svg";
 import { RxHamburgerMenu } from "react-icons/rx";
-import { useState } from "react";
 
 const ROUTES = ["Home", "About", "Services", "Pricing", "Contact"];
 
@@ -13,6 +12,23 @@ type Props = {
 
 export const Nav: FC<Props> = ({ onClickShoppingBtn, quantityProducts }) => {
   const [isMobileMenuShown, setIsMobileMenuShown] = useState(false);
+
+  useEffect(() => {
+    if (isMobileMenuShown) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMobileMenuShown]);
+
+  const handleMobileMenuToggle = () => {
+    setIsMobileMenuShown((currentState) => !currentState);
+  };
+
   return (
     <nav className="relative z-10 flex flex-wrap items-center justify-between">
       <a href="#">
@@ -20,7 +36,7 @@ export const Nav: FC<Props> = ({ onClickShoppingBtn, quantityProducts }) => {
       </a>
 
       <button
-        onClick={() => setIsMobileMenuShown(!isMobileMenuShown)}
+        onClick={handleMobileMenuToggle}
         className="rounded-lg p-2 hover:bg-gray-100 focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 lg:hidden"
       >
         <RxHamburgerMenu size={25} />
@@ -28,10 +44,10 @@ export const Nav: FC<Props> = ({ onClickShoppingBtn, quantityProducts }) => {
 
       <div
         className={`${
-          isMobileMenuShown === false && "hidden"
+          isMobileMenuShown ? "h-dvh z-50" : "hidden"
         } w-full lg:block lg:w-auto`}
       >
-        <ul className="flex flex-col rounded-lg border border-gray-100 bg-gray-50 p-4 text-lg lg:flex-row lg:space-x-8 lg:border-none lg:bg-transparent lg:dark:text-white">
+        <ul className="flex flex-col rounded-lg text-lg lg:flex-row lg:space-x-8 lg:border-none lg:bg-transparent lg:dark:text-white">
           {ROUTES.map((route, i) => {
             return (
               <li

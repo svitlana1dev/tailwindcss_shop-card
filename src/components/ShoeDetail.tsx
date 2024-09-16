@@ -5,7 +5,11 @@ import { Product } from "../types/product";
 
 type Props = {
   shoe: Product;
-  onClickAdd: (...args: any) => void;
+  onClickAdd: (
+    product: Product,
+    qty: string | null,
+    size: string | null
+  ) => void;
 };
 
 type Form = {
@@ -15,6 +19,10 @@ type Form = {
 
 export const ShoeDetail: FC<Props> = ({ shoe, onClickAdd }) => {
   const [form, setForm] = useState<Form>({ qty: null, size: null });
+
+  const handleOnClick = () => {
+    onClickAdd(shoe, form.qty, form.size);
+  };
 
   return (
     <div className="flex flex-col space-y-4 dark:text-white lg:flex-row-reverse">
@@ -31,7 +39,6 @@ export const ShoeDetail: FC<Props> = ({ shoe, onClickAdd }) => {
           <div className=" text-3xl font-extrabold md:text-6xl">
             {shoe.price} $
           </div>
-
           <Select
             value={form.qty}
             onChange={(qty: string) => setForm({ ...form, qty })}
@@ -48,7 +55,7 @@ export const ShoeDetail: FC<Props> = ({ shoe, onClickAdd }) => {
 
         <div className="space-x-10">
           <button
-            onClick={() => onClickAdd(shoe, form.qty, form.size)}
+            onClick={handleOnClick}
             className="btn-press-anim h-14 w-44 bg-black text-white hover:bg-gray-900 active:bg-gray-700 dark:bg-white  dark:text-black"
           >
             Add to bag
