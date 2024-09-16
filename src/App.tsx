@@ -29,14 +29,18 @@ export const App = () => {
   };
 
   const removeFromCart = (productId: number) => {
-    const updatedCartItems: any = [...cartItems];
-    const existingItemIndex = cartItems.findIndex(
-      (item: ProductItem) => item.product.id === productId
+    const updatedCartItems = cartItems.filter(
+      ({ product }: ProductItem) => product.id !== productId
     );
-    updatedCartItems.splice(existingItemIndex, 1);
+
     setCartItems(updatedCartItems);
   };
-  const addToCart = (product: Product, qty: string, size: string) => {
+
+  const addToCart = (
+    product: Product,
+    qty: string | null,
+    size: string | null
+  ) => {
     if (qty && size) {
       const updatedCartItems: CartItems = [...cartItems];
       const existingItemIndex = cartItems.findIndex(
@@ -53,18 +57,19 @@ export const App = () => {
     }
   };
 
+  const handleSidebarToggle = () => {
+    setIsSidebarOpen((currentState) => !currentState);
+  };
+
   return (
     <div className="animate-fadeIn p-10 dark:bg-night xl:px-24">
       <Nav
-        onClickShoppingBtn={() => setIsSidebarOpen(true)}
+        onClickShoppingBtn={handleSidebarToggle}
         quantityProducts={cartItems.length}
       />
       <ShoeDetail shoe={currentShoe} onClickAdd={addToCart} />
       <NewArrivalsSection items={SHOE_LIST} onClickCard={setCurrentShoe} />
-      <Sidebar
-        isOpen={isSidebarOpen}
-        onClickClose={() => setIsSidebarOpen(false)}
-      >
+      <Sidebar isOpen={isSidebarOpen} onClickClose={handleSidebarToggle}>
         <Cart cartItems={cartItems} onClickTrash={removeFromCart} />
       </Sidebar>
       <div className=" fixed bottom-4 right-4">

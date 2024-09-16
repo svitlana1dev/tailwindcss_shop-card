@@ -6,7 +6,7 @@ type Props = {
   title: string;
   options: number[];
   className?: string;
-  onChange?: any;
+  onChange: (value: string) => void;
   value: string | null;
 };
 
@@ -17,10 +17,14 @@ export const Select: FC<Props> = ({
   onChange,
   value,
 }) => {
+  const handleOnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    onChange(e.target.value);
+  };
+
   return (
     <div className="relative dark:text-black">
       <select
-        onChange={(e) => onChange(e.target.value)}
+        onChange={handleOnChange}
         value={value || ""}
         className={twMerge(
           `w-24 appearance-none border border-gray-300 bg-white p-4  ${className}`

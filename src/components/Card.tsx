@@ -7,9 +7,13 @@ type Props = {
 };
 
 export const Card: FC<Props> = ({ item, onClick }) => {
+  const handleOnClick = () => {
+    onClick(item);
+  };
+
   return (
     <div
-      onClick={() => onClick(item)}
+      onClick={handleOnClick}
       className={`${item.className} max-w-xl transform cursor-pointer transition hover:scale-105`}
     >
       <div className="p-8">

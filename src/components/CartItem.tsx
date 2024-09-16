@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { ChangeEvent, FC, useState } from "react";
 import { CiTrash } from "react-icons/ci";
 import { Select } from "./Select";
 import { SIZES, QTY } from "../constant";
@@ -13,6 +13,21 @@ export const CartItem: FC<Props> = ({
   item: { product, qty, size },
   onClickTrash,
 }) => {
+  const [sizeValue, setSizeValue] = useState(size);
+  const [qtyValue, setQtyValue] = useState(qty);
+
+  const onChangeSize = (value: string) => {
+    setSizeValue(value);
+  };
+
+  const onChangeQty = (value: string) => {
+    setQtyValue(value);
+  };
+
+  const handleOnClick = () => {
+    onClickTrash(product.id);
+  };
+
   return (
     <div
       className={
@@ -33,8 +48,9 @@ export const CartItem: FC<Props> = ({
           <div>
             <div className="font-bold dark:text-white">SIZE</div>
             <Select
-              value={size}
+              value={sizeValue}
               title=""
+              onChange={onChangeSize}
               options={SIZES}
               className={"w-16 p-1 pl-2"}
             />
@@ -42,14 +58,15 @@ export const CartItem: FC<Props> = ({
           <div>
             <div className="font-bold dark:text-white">QTY</div>
             <Select
-              value={qty}
+              value={qtyValue}
               title=""
+              onChange={onChangeQty}
               options={QTY}
               className={"w-16 p-1 pl-2"}
             />
           </div>
         </div>
-        <button onClick={() => onClickTrash(product.id)}>
+        <button onClick={handleOnClick}>
           <CiTrash size={25} className="text-black dark:text-white" />
         </button>
       </div>
